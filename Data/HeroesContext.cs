@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using HeroesWeb.Models;
+﻿using HeroesWeb.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
 namespace HeroesWeb.Data;
 
-public partial class HeroesContext : DbContext
+public partial class HeroesContext : IdentityDbContext<IdentityUser>
 {
     public HeroesContext(DbContextOptions<HeroesContext> options)
+
         : base(options)
+
     {
     }
 
@@ -18,6 +22,8 @@ public partial class HeroesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Heroes>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Heroes__3214EC0732A299BF");
