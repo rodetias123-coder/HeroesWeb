@@ -3,14 +3,19 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace HeroesWeb.Migrations
+namespace HeroesWeb.Migrations.Identity
 {
     /// <inheritdoc />
-    public partial class AddIdentity : Migration
+    public partial class CrearIdentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            // Las tablas de Identity ya existen en HeroesDb (creadas en una
+            // práctica anterior con esta misma estructura). No se recrean
+            // acá para no chocar con las que ya están.
+            return;
+#pragma warning disable CS0162
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -49,8 +54,6 @@ namespace HeroesWeb.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
-
-            // ELIMINADO: Creación de la tabla Heroes
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
@@ -98,8 +101,8 @@ namespace HeroesWeb.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -143,8 +146,8 @@ namespace HeroesWeb.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -157,8 +160,6 @@ namespace HeroesWeb.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            // ELIMINADO: Creación de la tabla SuperPoderes
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -198,8 +199,7 @@ namespace HeroesWeb.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            // ELIMINADO: Creación del Index IX_SuperPoderes_HeroeId
+#pragma warning restore CS0162
         }
 
         /// <inheritdoc />
@@ -220,15 +220,11 @@ namespace HeroesWeb.Migrations
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
 
-            // ELIMINADO: Drop de la tabla SuperPoderes
-
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            // ELIMINADO: Drop de la tabla Heroes
         }
     }
 }

@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HeroesWeb.Migrations
+namespace HeroesWeb.Migrations.Identity
 {
-    [DbContext(typeof(HeroesContext))]
-    [Migration("20260916121753_AddIdentity")]
-    partial class AddIdentity
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20260918121050_CrearIdentity")]
+    partial class CrearIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,62 +24,6 @@ namespace HeroesWeb.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("HeroesWeb.Models.Heroes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ciudad")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("IdentidadSecreta")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id")
-                        .HasName("PK__Heroes__3214EC0732A299BF");
-
-                    b.ToTable("Heroes");
-                });
-
-            modelBuilder.Entity("HeroesWeb.Models.SuperPoderes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Descripcion")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<int>("HeroeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id")
-                        .HasName("PK__SuperPod__3214EC07D5B6FEA4");
-
-                    b.HasIndex("HeroeId");
-
-                    b.ToTable("SuperPoderes");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -283,18 +227,6 @@ namespace HeroesWeb.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("HeroesWeb.Models.SuperPoderes", b =>
-                {
-                    b.HasOne("HeroesWeb.Models.Heroes", "Heroe")
-                        .WithMany("SuperPoderes")
-                        .HasForeignKey("HeroeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_SuperPoderes_Heroes");
-
-                    b.Navigation("Heroe");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -344,11 +276,6 @@ namespace HeroesWeb.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HeroesWeb.Models.Heroes", b =>
-                {
-                    b.Navigation("SuperPoderes");
                 });
 #pragma warning restore 612, 618
         }
